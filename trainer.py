@@ -9,7 +9,7 @@ class Trainer:
         optimizer = Adam(learning_rate=learning_rate)
         self.model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    def train_model(self, training_tokens, training_scores, epochs=11, batch_size=16, validation_split=0.2):
+    def train_model(self, training_tokens, training_scores, epochs=10, batch_size=16, validation_split=0.2):
         self.model.fit(training_tokens, training_scores, epochs=epochs, batch_size=batch_size, validation_split=validation_split)
 
     def evaluate_model(self, testing_tokens, testing_scores):

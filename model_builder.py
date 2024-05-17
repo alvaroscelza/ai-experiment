@@ -5,7 +5,7 @@ from tensorflow.keras.regularizers import l2
 
 
 class ModelBuilder:
-    def __init__(self, tokenizer, embedding_dim=50, max_sequence_length=100, num_classes=5):
+    def __init__(self, tokenizer, embedding_dim=100, max_sequence_length=100, num_classes=5):
         self.tokenizer = tokenizer
         self.embedding_dim = embedding_dim
         self.max_sequence_length = max_sequence_length
@@ -32,7 +32,7 @@ class ModelBuilder:
     def build_model(self, embedding_matrix):
         model = Sequential()
         model.add(Embedding(input_dim=embedding_matrix.shape[0], output_dim=self.embedding_dim,
-                            weights=[embedding_matrix], input_length=self.max_sequence_length, trainable=False))
+                            weights=[embedding_matrix], input_length=self.max_sequence_length, trainable=True))
         model.add(Bidirectional(LSTM(200)))
         model.add(Dense(self.num_classes, activation='softmax', kernel_regularizer=l2(0.0001)))
         return model
