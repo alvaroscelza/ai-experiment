@@ -1,9 +1,8 @@
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
-
 class Trainer:
-    def __init__(self, model, learning_rate=0.00005, batch_size=32, epochs=30):  # Adjusted hyperparameters
+    def __init__(self, model, learning_rate=0.0001, batch_size=32, epochs=30):  # Adjusted hyperparameters
         self.model = model
         self.learning_rate = learning_rate
         self.batch_size = batch_size

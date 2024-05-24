@@ -1,10 +1,10 @@
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, Bidirectional, LSTM, Dense, Dropout, Layer
+from tensorflow.keras.layers import Embedding, Bidirectional, LSTM, Dense, Dropout, BatchNormalization
 from tensorflow.keras.regularizers import l2
 import tensorflow as tf
 
-class Attention(Layer):
+class Attention(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
         super(Attention, self).__init__(**kwargs)
 
@@ -51,8 +51,10 @@ class ModelBuilder:
         model.add(Embedding(input_dim=embedding_matrix.shape[0], output_dim=self.embedding_dim,
                             weights=[embedding_matrix], input_length=self.max_sequence_length, trainable=True))
         model.add(Bidirectional(LSTM(200, return_sequences=True)))
+        model.add(BatchNormalization())
         model.add(Dropout(0.3))  # Increased dropout rate
         model.add(Bidirectional(LSTM(200, return_sequences=True)))
         model.add(Attention())  # Attention layer
+        model.add(Dropout(0.3))  # Added another dropout layer
         model.add(Dense(self.num_classes, activation='softmax', kernel_regularizer=l2(0.0001)))
         return model
