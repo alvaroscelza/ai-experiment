@@ -9,7 +9,7 @@ training_tokens, testing_tokens, training_scores, testing_scores, tokenizer = da
 
 # Load GloVe embeddings and build model
 model_builder = ModelBuilder(tokenizer)
-embedding_matrix = model_builder.load_glove_embeddings('glove.6B.100d.txt')
+embedding_matrix = model_builder.load_glove_embeddings('glove.6B.300d.txt')
 model = model_builder.build_model(embedding_matrix)
 
 # Compile, train, and evaluate the model
