@@ -7,10 +7,9 @@ data_loader = DataLoader(file_path='reviews.csv')
 texts, scores = data_loader.load_data()
 training_tokens, testing_tokens, training_scores, testing_scores, tokenizer = data_loader.preprocess_data(texts, scores)
 
-# Load GloVe embeddings and build model
+# Build model
 model_builder = ModelBuilder(tokenizer)
-embedding_matrix = model_builder.load_glove_embeddings('glove.6B.300d.txt')
-model = model_builder.build_model(embedding_matrix)
+model = model_builder.build_model()
 
 # Compile, train, and evaluate the model
 trainer = Trainer(model)
