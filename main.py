@@ -1,7 +1,15 @@
+import numpy as np
+import tensorflow as tf
+
 from data_loader import DataLoader
 from model_builder import ModelBuilder
 from trainer import Trainer
 from sklearn.metrics import accuracy_score
+
+# Set random seed for reproducibility
+RANDOM_STATE = 42
+np.random.seed(RANDOM_STATE)
+tf.random.set_seed(RANDOM_STATE)
 
 # Load and preprocess data
 data_loader = DataLoader(file_path='reviews.csv')
