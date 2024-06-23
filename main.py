@@ -1,15 +1,21 @@
+import os
 import numpy as np
 import tensorflow as tf
+from sklearn.metrics import accuracy_score
 
 from data_loader import DataLoader
 from model_builder import ModelBuilder
 from trainer import Trainer
-from sklearn.metrics import accuracy_score
 
 # Set random seed for reproducibility
 RANDOM_STATE = 42
+os.environ['PYTHONHASHSEED'] = str(RANDOM_STATE)
 np.random.seed(RANDOM_STATE)
 tf.random.set_seed(RANDOM_STATE)
+
+# Configure TensorFlow to use a single thread
+tf.config.threading.set_intra_op_parallelism_threads(1)
+tf.config.threading.set_inter_op_parallelism_threads(1)
 
 # Load and preprocess data
 data_loader = DataLoader(file_path='reviews.csv')
