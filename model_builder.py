@@ -12,7 +12,7 @@ class ModelBuilder:
     def build_model(self):
         model = Sequential()
         model.add(Embedding(input_dim=len(self.tokenizer.word_index) + 1, output_dim=self.embedding_dim,
-                            input_length=self.max_sequence_length, trainable=True))
+                            trainable=True))
         model.add(Conv1D(filters=128, kernel_size=5, activation='relu'))
         model.add(GlobalMaxPooling1D())
         model.add(Dense(128, activation='relu', kernel_regularizer=l2(0.0001)))
