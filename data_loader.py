@@ -14,10 +14,24 @@ class DataLoader:
 
     def load_data(self):
         reviews = pd.read_csv(self.file_path)
-        reviews["score"] = reviews["score"].apply(np.ceil)
-        reviews['combined_text'] = reviews.apply(lambda row: f"{row['translation_title']} {row['translation_text']}", axis=1)
+        scores = reviews["score"].apply(np.ceil)
+        # Combine translation_title and translation_text, handling empty translation_text
+        texts = reviews.apply(lambda row: self.combine_texts(row['translation_title'], row['translation_text']), axis=1)
         reviews.drop(columns=['translation_title', 'translation_text'], inplace=True)
-        return reviews['combined_text'], reviews['score']
+        texts_deduplicated = texts.drop_duplicates(keep='first')
+        scores_deduplicated = scores[texts_deduplicated.index]
+        return texts_deduplicated, scores_deduplicated
+
+    @staticmethod
+    def combine_texts(title, text):
+        if pd.isna(title) and pd.isna(text):
+            return ''
+        elif pd.isna(text) or text.strip() == '':
+            return title
+        elif pd.isna(title) or title.strip() == '':
+            return text
+        else:
+            return f"{title} {text}"
 
     def preprocess_data(self, texts, scores):
         label_encoder = LabelEncoder()
