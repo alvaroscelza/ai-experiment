@@ -14,13 +14,19 @@ class DataLoader:
 
     def load_data(self):
         reviews = pd.read_csv(self.file_path)
-        scores = reviews["score"].apply(np.ceil)
         # Combine translation_title and translation_text, handling empty translation_text
         texts = reviews.apply(lambda row: self.combine_texts(row['translation_title'], row['translation_text']), axis=1)
-        reviews.drop(columns=['translation_title', 'translation_text'], inplace=True)
-        texts_deduplicated = texts.drop_duplicates(keep='first')
-        scores_deduplicated = scores[texts_deduplicated.index]
-        return texts_deduplicated, scores_deduplicated
+        scores = reviews["score"]
+
+        # Handle empty texts
+        combined_reviews = pd.DataFrame({'combined_text': texts, 'score': scores})
+        combined_reviews = combined_reviews[combined_reviews['combined_text'] != '']
+
+        # Group by 'combined_text' and average the scores, then apply ceiling
+        combined_reviews = combined_reviews.groupby('combined_text', as_index=False).agg({'score': 'mean'})
+        combined_reviews['score'] = combined_reviews['score'].apply(np.ceil)
+
+        return combined_reviews['combined_text'], combined_reviews['score']
 
     @staticmethod
     def combine_texts(title, text):
