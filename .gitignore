@@ -22,6 +22,7 @@ venv
 .idea
 mydir
 reviews.csv
+reviews.json
 glove.6B.50d.txt
 glove.6B.100d.txt
 glove.6B.200d.txt
